@@ -14,7 +14,7 @@ const authContext = createContext();
 
 export const useAuth = () => {
   const context = useContext(authContext);
-  if (!context) throw new Error("There is no Auth provider");
+  if (!context) throw new Error("No hay proveedor de autenticación");
   return context;
 };
 
@@ -41,7 +41,6 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const unsubuscribe = onAuthStateChanged(auth, (currentUser) => {
-
       setUser(currentUser);
       setLoading(false);
     });

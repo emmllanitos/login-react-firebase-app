@@ -24,6 +24,9 @@ export function Register() {
         case "auth/invalid-email":
           setError("Correo invalido");
           break;
+        case "auth/internal-error":
+          setError("Ingrese alguna contraseña");
+          break;
         case "auth/weak-password":
           setError("La contraseña debe tener minimo 6 caracteres");
           break;
@@ -49,13 +52,13 @@ export function Register() {
             htmlFor="email"
             className="block text-gray-700 text-sm font-bold mb-2"
           >
-            Email
+            Correo electrónico
           </label>
           <input
             type="email"
             onChange={(e) => setUser({ ...user, email: e.target.value })}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            placeholder="youremail@company.tld"
+            placeholder="SuCorreo@SuDominio.com"
           />
         </div>
 
@@ -64,7 +67,7 @@ export function Register() {
             htmlFor="password"
             className="block text-gray-700 text-sm font-bold mb-2"
           >
-            Password
+            Contraseña
           </label>
           <input
             type="password"
@@ -75,13 +78,13 @@ export function Register() {
         </div>
 
         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-          Register
+          Registrarse
         </button>
       </form>
       <p className="my-4 text-sm flex justify-between px-3">
-        Already have an Account?
+        Ya tienes una cuenta?
         <Link to="/login" className="text-blue-700 hover:text-blue-900">
-          Login
+          Iniciar sesión
         </Link>
       </p>
     </div>

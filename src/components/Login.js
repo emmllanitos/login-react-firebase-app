@@ -23,8 +23,8 @@ export function Login() {
         case "auth/invalid-email":
           setError("Correo invalido");
           break;
-        case "auth/weak-password":
-          setError("La contraseña debe tener minimo 6 caracteres");
+        case "auth/internal-error":
+          setError("Ingrese la contraseña");
           break;
         case "auth/user-not-found":
           setError("El usuario no se encuentra registrado");
@@ -52,12 +52,30 @@ export function Login() {
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
-    if (!user.email) return setError("Write an email to reset password");
+    if (!user.email)
+      return setError(
+        "Escriba un correo electrónico para restablecer la contraseña"
+      );
     try {
       await resetPassword(user.email);
-      setError("We sent you an email. Check your inbox");
+      setError("Te enviamos un correo electrónico. Revisa tu correo");
     } catch (error) {
-      setError(error.message);
+      switch (error.code) {
+        case "auth/invalid-email":
+          setError("Correo invalido");
+          break;
+        case "auth/internal-error":
+          setError("Ingrese la contraseña");
+          break;
+        case "auth/user-not-found":
+          setError("El usuario no se encuentra registrado");
+          break;
+        case "auth/wrong-password":
+          setError("Contraseña incorrecta");
+          break;
+        default:
+          setError(error.message);
+      }
     }
   };
 
@@ -74,7 +92,7 @@ export function Login() {
             htmlFor="email"
             className="block text-gray-700 text-sm font-bold mb-2"
           >
-            Email
+            Correo electrónico
           </label>
           <input
             type="email"
@@ -82,7 +100,7 @@ export function Login() {
             id="email"
             onChange={handleChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            placeholder="youremail@company.tld"
+            placeholder="SuCorreo@SuDominio.com"
           />
         </div>
         <div className="mb-4">
@@ -90,7 +108,7 @@ export function Login() {
             htmlFor="password"
             className="block text-gray-700 text-sm font-bold mb-2"
           >
-            Password
+            Contraseña
           </label>
           <input
             type="password"
@@ -107,14 +125,14 @@ export function Login() {
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="submit"
           >
-            Sign In
+            Ingresar
           </button>
           <a
             className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
             href="#!"
             onClick={handleResetPassword}
           >
-            Forgot Password?
+            Olvido la contraseña?
           </a>
         </div>
       </form>
@@ -122,12 +140,12 @@ export function Login() {
         onClick={handleGoogleSignin}
         className="bg-slate-50 hover:bg-slate-200 text-black  shadow rounded border-2 border-gray-300 py-2 px-4 w-full"
       >
-        Google login
+        Iniciar sesión con Google
       </button>
       <p className="my-4 text-sm flex justify-between px-3">
-        Don't have an account?
+        No tienes una cuenta?
         <Link to="/register" className="text-blue-700 hover:text-blue-900">
-          Register
+          Registrarse
         </Link>
       </p>
     </div>
